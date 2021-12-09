@@ -5,6 +5,8 @@ const range = document.getElementById("jsRange");
 const mode = document.getElementById('jsMode');
 const saveBnt = document.getElementById("jsSave");
 
+const windows = window.document
+
 const INITIAL_COLOR = '#2c2c2c';
 const CANVAS_SIZE =  700;
 
@@ -22,6 +24,7 @@ ctx.lineWidth = 2.5;
 
 let painting = false;
 let filling = false;
+let mouseState = false;
 
 
 function stopPainting(){
@@ -91,6 +94,15 @@ function handleSaveClick(){
     link.click();
 }
 
+function handleMouseEnter(event){
+    if (mouseState){
+        painting = true;
+    }
+    else{
+        painting = false;
+    }
+}
+
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove);
     canvas.addEventListener("mousedown", startPainting);
@@ -98,7 +110,22 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", handleCanvasClick);
     canvas.addEventListener("contextmenu", handleCM);
+    canvas.addEventListener("mouseenter", handleMouseEnter);
 }
+
+function mouseDown(){
+    mouseState = true;
+}
+
+function mouseUp(){
+    mouseState = false;
+}
+
+if(windows){
+    windows.addEventListener("mousedown", mouseDown);
+    windows.addEventListener('mouseup', mouseUp);
+}
+
 
 Array.from(colors).forEach(color => color.addEventListener("click", handleColorClivk));
 
