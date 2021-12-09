@@ -25,6 +25,7 @@ ctx.lineWidth = 2.5;
 let painting = false;
 let filling = false;
 let mouseState = false;
+let isEnterNow = false;
 
 
 function stopPainting(){
@@ -34,13 +35,18 @@ function stopPainting(){
 function onMouseMove(event){
     const x = event.offsetX;
     const y = event.offsetY;
-    if(!painting){
-        ctx.beginPath()
-        ctx.moveTo(x,y)
+    if(painting){
+        if(isEnterNow){
+            ctx.beginPath();
+            ctx.moveTo(x,y);
+            isEnterNow = false;
+        }
+        ctx.lineTo(x,y);
+        ctx.stroke();
     }
     else{
-        ctx.lineTo(x,y)
-        ctx.stroke()
+        ctx.beginPath();
+        ctx.moveTo(x,y);
     }
 }
 
@@ -95,6 +101,7 @@ function handleSaveClick(){
 }
 
 function handleMouseEnter(event){
+    isEnterNow = true;
     if (mouseState){
         painting = true;
     }
